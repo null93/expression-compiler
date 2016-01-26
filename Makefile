@@ -1,7 +1,7 @@
 default:
 	make clean
 	make main
-	make tester
+	make test
 
 token.o: 	token.cpp token.h
 	g++ -std=c++11 -c token.cpp
@@ -12,19 +12,15 @@ exceptions.o: 	exceptions.cpp exceptions.h
 lexer.o: 	lexer.cpp lexer.h
 	g++ -std=c++11 -c lexer.cpp
 
-main: token.o exceptions.o main.cpp lexer.o
-	g++ -std=c++11 main.cpp token.o exceptions.o lexer.o -o elc
+parser.o: 	parser.cpp parser.h
+	g++ -std=c++11 -c parser.cpp
 
-tester:
-	./elc Test_Cases/test01.el
-	./elc Test_Cases/test02.el
-	./elc Test_Cases/test03.el
-	./elc Test_Cases/test04.el
-	./elc Test_Cases/test05.el
-	./elc Test_Cases/test10.el
-	./elc Test_Cases/test11.el
-	./elc Test_Cases/test12.el
-	./elc Test_Cases/test13.el
+main: token.o exceptions.o main.cpp lexer.o parser.o
+	g++ -std=c++11 main.cpp token.o exceptions.o lexer.o parser.o -o elc
+
+test: token.o exceptions.o main.cpp lexer.o parser.o
+	g++ -std=c++11 test-parser.cpp token.o exceptions.o lexer.o parser.o -o test
+	./test
 
 clean:
 	rm -rf *.o elc .DS_Store ./Test_Cases/*.cpp

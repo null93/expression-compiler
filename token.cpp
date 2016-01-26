@@ -88,8 +88,8 @@ Token::Token ( TokenID id, int line, int column )
 		case TokenID::OUTPUT:
 			Value = "<<";
 			break;
-		case TokenID::VARIABLE:
-			Value = "VARIABLE";
+		case TokenID::VAR:
+			Value = "VAR";
 			break;
 		case TokenID::STRING_LITERAL:
 			Value = "STRING_LITERAL";
@@ -97,10 +97,10 @@ Token::Token ( TokenID id, int line, int column )
 		case TokenID::NUMERIC_LITERAL:
 			Value = "NUMERIC_LITERAL";
 			break;
-		case TokenID::LEFT_PARENTHESIS:
+		case TokenID::LEFT_PAREN:
 			Value = "(";
 			break;
-		case TokenID::RIGHT_PARENTHESIS:
+		case TokenID::RIGHT_PAREN:
 			Value = ")";
 			break;
 		// By default, throw an error exception

@@ -17,6 +17,7 @@
 #include "exceptions.h"
 #include "token.h"
 #include "lexer.h"
+#include "parser.h"
 
 using namespace std;
 
@@ -38,11 +39,13 @@ void arguments ( int argC, char * argV [], string& infile, string& outfile ) {
 	infile = argV [ 1 ];
 	// Change the extension for the outfile
 	auto position = infile.rfind ('.');
+	if ( position == string::npos) {
+    	throw UsageError ("elc sourcefile.el");
+	}
 	// Replace extension to CPP
 	string base = infile.substr ( 0, position );
 	outfile = base + ".cpp";
 }
-
 
 int main ( int argC, char * argV [] ) {
 	// Declare our infile and our outfile names
@@ -52,28 +55,14 @@ int main ( int argC, char * argV [] ) {
 		// Parse arguments
 		arguments ( argC, argV, infile, outfile );
 		// output infile and outfile
-		cout << "Compiling '" << infile << "' -> '" << outfile << "'" << endl;
-		// Create Lexer and empty C++ output file
-		Lexer lexer ( infile );
-		ofstream cppfile ( outfile, ofstream::trunc );
-		// Get the first token from source file
-		Token token = lexer.nextToken();
-		// Loop and get tokens until the EOT token is received
-		while ( token.ID != TokenID::EOT ) {
-			// Print token on the screen
-			cout << token << endl;
-			// Print token into file
-			cppfile << token << endl;
-			// Get next token
-			token = lexer.nextToken();
-		}
-		// Print token on the screen
-		cout << token << endl;
-		// Print token into file
-		cppfile << token << endl;
+		cout << "compiling '" << infile << "' -> '" << outfile << "'" << endl;
+		// Initiate Parser class
+		Parser Parser ( infile, outfile );
+		// Parse the source file
+		Parser.parse ();
 	}
 	catch ( exception& num ) {
-		// print out which error happened
+		// Print out which error happened
 		cout << num.what () << endl;
 	}
 	// Return with no errors

@@ -121,7 +121,7 @@ Token Position::matchString () {
 	// Initialize current character
 	char character = Lines [ LineIndex ] [ ColumnIndex ];
 	// Loop while there is a next character available
-	while ( LineIndex != LineCount && Column <= LineLength ) {
+	while ( LineIndex != LineCount && Column <= LineLength && LineIndex < backupLine ) {
 		// Increment loop and add to string
 		character = next ();
 		build += character;
@@ -135,7 +135,7 @@ Token Position::matchString () {
 		}
 	}
 	// By default, we will send a syntax error
-	throw SyntaxError::SyntaxError ( backupLine, backupColumn, "String literal could not be matched" );
+	throw SyntaxError::SyntaxError ( backupLine, backupColumn, "invalid string literal" );
 }
 
 /**
@@ -149,7 +149,7 @@ Token Position::matchString () {
 Token Position::matchNumericalLiteral ( bool force ) {
 	// If force is true and the next character is a number, then throw error
 	if ( force && available () && isdigit ( next () ) ) {
-		throw SyntaxError::SyntaxError ( Line, Column, "Invalid numeric literal" );
+		throw SyntaxError::SyntaxError ( Line, Column, "invalid numeric literal" );
 	}
 	else if ( force ) {
 		return Token ( TokenID::UNKNOWN, '.', Line, column ( 1 ) );
@@ -166,7 +166,7 @@ Token Position::matchNumericalLiteral ( bool force ) {
 		result = match.str ( 1 );
 		// Throw an error if the next character is '.'
 		if ( result [ result.length () - 1 ] == '.' || force ) {
-			throw SyntaxError::SyntaxError ( Line, Column, "Invalid numeric literal" );
+			throw SyntaxError::SyntaxError ( Line, Column, "invalid numeric literal" );
 		}
 	}
 	// Increment based on the size of the string
@@ -193,7 +193,7 @@ Token Position::matchVariable () {
 		character = Lines [ LineIndex ] [ ColumnIndex ];
 	}
 	// Return the variable Token
-	return Token ( TokenID::VARIABLE, result, Line, Column - result.length () );
+	return Token ( TokenID::VAR, result, Line, Column - result.length () );
 }
 
 /**
@@ -223,7 +223,7 @@ Lexer::Lexer ( string infile )
 	}
 	else {
 		// Usage error: file doesn't exist
-		throw UsageError::UsageError ( "Unable to locate and open file '" + infile + "'" );
+		throw UsageError::UsageError ( "unable to open '" + infile + "'" );
 	}
 }
 
@@ -288,9 +288,9 @@ Token Lexer::nextToken () {
 				case '=' :
 					return Token ( TokenID::EQUAL, Cursor.Line, Cursor.column ( 1 ) );
 				case '(' :
-					return Token ( TokenID::LEFT_PARENTHESIS, Cursor.Line, Cursor.column ( 1 ) );
+					return Token ( TokenID::LEFT_PAREN, Cursor.Line, Cursor.column ( 1 ) );
 				case ')' :
-					return Token ( TokenID::RIGHT_PARENTHESIS, Cursor.Line, Cursor.column ( 1 ) );
+					return Token ( TokenID::RIGHT_PAREN, Cursor.Line, Cursor.column ( 1 ) );
 				default :
 					return Token ( TokenID::UNKNOWN, character, Cursor.Line, Cursor.column ( 1 ) );
 			}

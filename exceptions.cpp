@@ -25,7 +25,7 @@ using namespace std;
  */
 SyntaxError::SyntaxError ( int line, int column, string error ) {
 	stringstream  ss;
-	ss << "Syntax Error @ (" << line << "," << column << "): " << error;
+	ss << "syntax error @ (" << line << "," << column << "): " << error;
 	Message = ss.str ();
 }
 
@@ -50,7 +50,7 @@ const char * SyntaxError::what () const noexcept {
  */
 SemanticError::SemanticError ( int line, int column, string error ) {
 	stringstream  ss;
-	ss << "Semantic Error @ (" << line << "," << column << "): " << error;
+	ss << "semantic error @ (" << line << "," << column << "): " << error;
 	Message = ss.str ();
 }
 
@@ -72,7 +72,7 @@ const char * SemanticError::what () const noexcept {
  * @return  void
  */
 UsageError::UsageError ( string error ) {
-	Message = "Usage: " + error;
+	Message = "usage: " + error;
 }
 
 /**
@@ -93,7 +93,7 @@ const char * UsageError::what () const noexcept {
  * @return  void
  */
 InternalError::InternalError ( string error ) {
-	Message = "**Internal Error: " + error;
+	Message = "**internal error: " + error;
 }
 
 /**
