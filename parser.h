@@ -16,7 +16,10 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <string>
+#include <list>
 #include "lexer.h"
+#include "token.h"
 
 using namespace std;
 
@@ -36,121 +39,138 @@ class Parser {
 		/**
 		 * This variable will hold the Lexer object and it will be able to access the Lexer
 		 * functions privately within the objects scope.
-		 * @var 	Lexer
+		 * @var 	Lexer 			Lexer
 		 */
 		Lexer Lexer;
 
 		/**
 		 * This variable will keep track of the current Token that out Lexer has parsed out.
-		 * @var 	Token
+		 * @var 	Token 			CurrentToken
 		 */
 		Token CurrentToken;
 
 		/**
 		 * This is an instance of ofstream and it will be initialized within the constructor.  It
 		 * will be used to direct output into the output file.
-		 * @var 	ofstream
+		 * @var 	ofstream 		cppfile
 		 */
 		ofstream cppfile;
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This vector holds a collection of Token objects that are associated with variables that
+		 * we have currently declared and initialized in the EL language source file.
+		 * @var 	vector <Token> 	Variables
+		 */
+		vector <Token> Variables;
+
+		/**
+		 * This string allows us to queue up an expression in order to output it into outfile
+		 * later in the Parser::statement().  This string data member is critical for code
+		 * generation
+		 * @var 	string 		Expression 		Holds our string queue.
+		 */
+		string Expression;
+
+		/**
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void program ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void more_stmts ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void statements ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void input ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void more_input ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void input_op ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void output ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void more_output ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void output_op ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void output_val ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void assignment ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void expr ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
+		 * @param 	int 	position
 		 */
-		void expr2 ();
+		void expr2 ( int position );
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void md_expr ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
+		 * @param 	int 	position
 		 */
-		void md_expr2 ();
+		void md_expr2 ( int position );
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void pow_expr ();
 
 		/**
-		 * This function is derived from a CFL that was built in HW03.
+		 * This function is derived from a CFL that was built in HW01.
 		 * @return 	void
 		 */
 		void base_expr ();
@@ -165,6 +185,15 @@ class Parser {
 		 * @return 	void
 		 */
 		void match ( TokenID passed );
+
+		/**
+		 * This function iterates through our "stack" of declared variables and sees if the target
+		 * name matches any of the Tokens values.  This will be used to see if we need to put
+		 * another declaration into the C++ outfile.
+		 * @param 	string 		target 		The target string that we will try to match
+		 * @return 	bool					Whether the target was matched
+		 */
+		bool declared ( string target );
 
 	public:
 
