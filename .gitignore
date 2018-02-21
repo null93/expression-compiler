@@ -1,0 +1,4 @@
+/build/
+/bin/
+/test/*/main.cpp
+.DS_Store
