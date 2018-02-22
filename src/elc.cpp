@@ -33,14 +33,14 @@ void arguments ( int argC, char * argV [], string& infile, string& outfile ) {
 	// Check to see that we have two arguments passed
 	if ( argC != 2 && argC != 4 ) {
 		// If we don't throw a usage error
-		throw UsageError ("elc source_file.el [-o output_folder]");
+		throw UsageError ("elc source_file.el");
 	}
 	// Set the infile name in main's scope
 	infile = argV [ 1 ];
 	// Change the extension for the outfile
 	auto position = infile.rfind ('.');
 	if ( position == string::npos ) {
-    	throw UsageError ("elc sourcefile.el [-o output_folder]");
+    	throw UsageError ("elc sourcefile.el");
 	}
 	// By default compile in same folder as source
 	string base = infile.substr ( 0, position );
