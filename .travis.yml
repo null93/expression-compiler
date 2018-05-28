@@ -1,4 +1,5 @@
 language: cpp
 os: osx
-script: make clean && make tests && ./bin/tests
+before_script: make clean && make tests
+script: ./bin/tests
 compiler: g++
