@@ -90,7 +90,7 @@ void Parser::statements () {
 	// Other wise throw an exception
 	else {
 		// Throw our exception
-		throw SyntaxError::SyntaxError (
+		throw SyntaxError (
 			CurrentToken.Line,
 			CurrentToken.Column,
 			"expecting >>, <<, or VAR"
@@ -186,7 +186,7 @@ void Parser::output_val () {
 		// Throw if the variable is not declared
 		if ( !declared ( CurrentToken.Value ) ) {
 			// Throw a semantic error stating that an uninitialized variable is being used
-			throw SemanticError::SemanticError (
+			throw SemanticError (
 				CurrentToken.Line,
 				CurrentToken.Column,
 				"variable '" + CurrentToken.Value + "' undefined"
@@ -208,7 +208,7 @@ void Parser::output_val () {
 	// Otherwise throw an error
 	else {
 		// Throw our exception
-		throw SyntaxError::SyntaxError (
+		throw SyntaxError (
 			CurrentToken.Line,
 			CurrentToken.Column,
 			"Expecting VAR or NUMERIC_LITERAL or STRING_LITERAL"
@@ -381,7 +381,7 @@ void Parser::base_expr () {
 		// Throw if the variable is not declared
 		if ( !declared ( CurrentToken.Value ) ) {
 			// Throw a semantic error stating that an uninitialized variable is being used
-			throw SemanticError::SemanticError (
+			throw SemanticError (
 				CurrentToken.Line,
 				CurrentToken.Column,
 				"variable '" + CurrentToken.Value + "' undefined"
@@ -402,7 +402,7 @@ void Parser::base_expr () {
 	// If all else fails, throw a syntax error
 	else {
 		// Throw our exception
-		throw SyntaxError::SyntaxError (
+		throw SyntaxError (
 			CurrentToken.Line,
 			CurrentToken.Column,
 			"expecting (, VAR, or NUMERIC_LITERAL"
@@ -427,7 +427,7 @@ void Parser::match ( TokenID passed ) {
 	// Otherwise throw an error
 	else {
 		// Throw our exception
-		throw SyntaxError::SyntaxError (
+		throw SyntaxError (
 			CurrentToken.Line,
 			CurrentToken.Column,
 			"expecting " + Token ( passed, CurrentToken.Line, CurrentToken.Column ).Value

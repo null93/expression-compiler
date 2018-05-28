@@ -135,7 +135,7 @@ Token Position::matchString () {
 		}
 	}
 	// By default, we will send a syntax error
-	throw SyntaxError::SyntaxError ( backupLine, backupColumn, "invalid string literal" );
+	throw SyntaxError ( backupLine, backupColumn, "invalid string literal" );
 }
 
 /**
@@ -149,7 +149,7 @@ Token Position::matchString () {
 Token Position::matchNumericalLiteral ( bool force ) {
 	// If force is true and the next character is a number, then throw error
 	if ( force && available () && isdigit ( next () ) ) {
-		throw SyntaxError::SyntaxError ( Line, Column, "invalid numeric literal" );
+		throw SyntaxError ( Line, Column, "invalid numeric literal" );
 	}
 	else if ( force ) {
 		return Token ( TokenID::UNKNOWN, '.', Line, column ( 1 ) );
@@ -166,7 +166,7 @@ Token Position::matchNumericalLiteral ( bool force ) {
 		result = match.str ( 1 );
 		// Throw an error if the next character is '.'
 		if ( result [ result.length () - 1 ] == '.' || force ) {
-			throw SyntaxError::SyntaxError ( Line, Column, "invalid numeric literal" );
+			throw SyntaxError ( Line, Column, "invalid numeric literal" );
 		}
 	}
 	// Increment based on the size of the string
@@ -223,7 +223,7 @@ Lexer::Lexer ( string infile )
 	}
 	else {
 		// Usage error: file doesn't exist
-		throw UsageError::UsageError ( "unable to open '" + infile + "'" );
+		throw UsageError ( "unable to open '" + infile + "'" );
 	}
 }
 

@@ -11,6 +11,7 @@ using std::string;
 const char * TEST_PATH = "./test";
 
 int main ( int argC, char * argV [] ) {
+	int returnCode = 0;
     DIR * directory = opendir ( TEST_PATH );
     struct dirent * entry = readdir ( directory );
     while ( entry != NULL ) {
@@ -27,11 +28,11 @@ int main ( int argC, char * argV [] ) {
 			sprintf ( compile_command, "./bin/elc %s > /dev/null 2>&1", source_file );
 			sprintf ( diff_command, "diff -qbB %s %s", assert_file, output_file );
 			system ( compile_command );
-			system ( diff_command );
+			returnCode += system ( diff_command );
 			remove ( output_file );
 		}
         entry = readdir ( directory );
     }
     closedir ( directory );
-	return 0;
+	return returnCode;
 }

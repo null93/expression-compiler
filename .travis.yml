@@ -1,0 +1,4 @@
+language: cpp
+os: osx
+script: make clean && make tests && ./bin/tests
+compiler: g++
